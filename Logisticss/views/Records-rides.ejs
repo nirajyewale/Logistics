@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ride History - LogisticsPro</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+    <link rel="stylesheet" href="css/Login.css">
+    <style>
+        /* Add some basic styling for the OTP modal */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px; 
+            border-radius: 5px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body onload="getRideHistory()">
+
+    <!-- Existing Navigation and other content -->
+
+    <div class="ride-history-container">
+        <h2>Ride History</h2>
+        <div class="ride-section">
+            <h3>Ongoing Rides</h3>
+            <ul id="ongoing-rides"></ul>
+        </div>
+        <div class="ride-section">
+            <h3>Past Rides</h3>
+            <ul id="past-rides"></ul>
+        </div>
+        <div class="ride-section">
+            <h3>Upcoming Rides</h3>
+            <ul id="upcoming-rides"></ul>
+        </div>
+    </div>
+
+    <div id="otpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOtpModal()">&times;</span>
+            <h3>Enter OTP to Start Ride</h3>
+            <input type="hidden" id="currentRideId" value="">
+            <p id="otpMessage"></p>
+            <input type="text" id="otpInput" placeholder="Enter OTP" required>
+            <button onclick="validateOtp()">Submit</button>
+            <p id="otpError" class="error"></p>
+        </div>
+    </div>
+
+    <script>
+     async function getRideHistory() {
+    try {
+        const response = await fetch('/api/rides'); // Fetch rides from backend
+        const rides = await response.json(); // Convert response to JSON
+        console.log("Fetched rides:", rides); // Log the fetched rides
+
+        const ongoingRides = rides.filter(ride => ride.status === 'ongoing');
+        const pastRides = rides.filter(ride => ride.status === 'past');
+        const upcomingRides = rides.filter(ride => ride.status === 'upcoming');
+
+        renderRides(ongoingRides, "ongoing-rides");
+        renderRides(pastRides, "past-rides");
+        renderUpcomingRides(upcomingRides, "upcoming-rides");
+    } catch (error) {
+        console.error('Error fetching ride history:', error);
+    }
+}
+
+
+        // Function to render rides dynamically
+        function renderRides(rides, elementId) {
+            const rideList = document.getElementById(elementId);
+            rideList.innerHTML = '';
+            rides.forEach(ride => {
+                const rideItem = document.createElement('li');
+                rideItem.textContent = `${ride.name} - ${ride.source} to ${ride.destination} (${ride.status})`;
+                rideList.appendChild(rideItem);
+            });
+        }
+
+        // Function to render upcoming rides with "Start Ride" buttons
+        function renderUpcomingRides(rides, elementId) {
+    const rideList = document.getElementById(elementId);
+    rideList.innerHTML = '';
+    rides.forEach(ride => {
+        console.log("Upcoming ride data:", ride); // Log ride data
+
+        const rideItem = document.createElement('li');
+        rideItem.style.display = 'flex';
+        rideItem.style.justifyContent = 'space-between';
+        rideItem.style.alignItems = 'center';
+        rideItem.style.marginBottom = '10px';
+
+        const rideInfo = document.createElement('span');
+        rideInfo.textContent = `${ride.name} - ${ride.source} to ${ride.destination} (${ride.status})`;
+
+        const startButton = document.createElement('button');
+        startButton.textContent = 'Start Ride';
+        startButton.style.padding = '5px 10px';
+        startButton.style.cursor = 'pointer';
+        startButton.onclick = () => startRide(ride); // Pass the whole ride object
+
+        rideItem.appendChild(rideInfo);
+        rideItem.appendChild(startButton);
+        rideList.appendChild(rideItem);
+    });
+}
+
+async function startRide(ride) { // Accept ride object instead of rideId
+    console.log("Starting ride with UUID:", ride.uuid); // Log the ride UUID
+
+    try {
+        const response = await fetch('/api/send-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ rideId: ride._id }), // Use ride._id if you need to send it
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            // Show OTP modal with the generated OTP and UUID
+            showOtpInput(result.otp, result.uuid); // Pass the UUID to the modal
+        } else {
+            alert('Failed to send OTP.');
+        }
+    } catch (error) {
+        console.error('Error sending OTP:', error);
+    }
+}
+
+function showOtpInput(otp, uuid) { // Change rideId to uuid
+    const otpModal = document.getElementById('otpModal');
+    const otpInput = document.getElementById('otpInput');
+    otpInput.value = ''; // Clear previous input
+    otpModal.style.display = 'block'; // Show the modal
+
+    const otpMessage = document.getElementById('otpMessage');
+    otpMessage.textContent = `Your OTP is: ${otp}`; // Display the OTP
+    document.getElementById('currentRideId').value = uuid; // Save uuid for validation
+}
+
+async function validateOtp() {
+    const uuid = document.getElementById('currentRideId').value; // Get UUID instead of rideId
+    const otp = document.getElementById('otpInput').value;
+
+    console.log("Validating OTP for ride UUID:", uuid, "with OTP:", otp); // Log UUID and OTP
+
+    try {
+        const response = await fetch('/api/validate-otp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ uuid, otp }), // Send UUID and OTP
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            alert('Ride started successfully!');
+            closeOtpModal(); // Close the modal
+            getRideHistory(); // Refresh the ride history
+        } else {
+            alert('Invalid OTP. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error validating OTP:', error);
+    }
+}
+
+function closeOtpModal() {
+    document.getElementById('otpModal').style.display = 'none'; // Hide the modal
+}
+</script>
+<script src="js/script.js"></script>
+</body>
+</html>

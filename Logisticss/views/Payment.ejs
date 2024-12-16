@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Transaction</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <h1>Make a Payment</h1>
+    <form id="payment-form">
+        <label for="distance">Distance Traveled (in km):</label>
+        <input type="text" id="distance" name="distance" required><br><br>
+        <label for="time">Time Spent (in minutes):</label>
+        <input type="text" id="time" name="time" required><br><br>
+        <label for="surge">Surge Multiplier:</label>
+        <input type="text" id="surge" name="surge"><br><br>
+        <label for="additional-charges">Additional Charges:</label>
+        <input type="text" id="additional-charges" name="additional-charges"><br><br>
+        <button type="submit">Pay Now</button>
+    </form>
+
+    <script>
+        document.getElementById('payment-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Fetch form data
+            const distance = parseFloat(document.getElementById('distance').value);
+            const time = parseFloat(document.getElementById('time').value);
+            const surge = parseFloat(document.getElementById('surge').value) || 1.0; // Default to 1.0 if surge is not provided
+            const additionalCharges = parseFloat(document.getElementById('additional-charges').value) || 0; // Default to 0 if additional charges are not provided
+
+            // Fare calculation
+            const baseFare = 50; // Example base fare
+            const ratePerKm = 10; // Example rate per kilometer
+            const ratePerMinute = 1; // Example rate per minute
+
+            const distanceFare = distance * ratePerKm;
+            const timeFare = time * ratePerMinute;
+            const totalFare = baseFare + distanceFare + timeFare;
+
+            const surgeTotalFare = totalFare * surge;
+            const finalFare = surgeTotalFare + additionalCharges;
+
+            fetch('/create-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    amount: finalFare * 100, // Convert to paise (Razorpay accepts amount in smallest currency unit)
+                    description: 'Cab Fare Payment'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const options = {
+                    key: 'rzp_test_fjFw1doTKfiPeP', // Replace with your Razorpay key
+                    amount: data.amount,
+                    currency: 'INR',
+                    name: 'Your Company Name',
+                    description: data.description,
+                    order_id: data.id,
+                    handler: function(response) {
+                        // Handle payment success
+                        alert('Payment successful! Payment ID: ' + response.razorpay_payment_id);
+                    },
+                    theme: {
+                        color: '#F37254'
+                    }
+                };
+                
+                const rzp = new Razorpay(options);
+                rzp.open();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again later.');
+            });
+        });
+    </script>
+</body>
+</html>

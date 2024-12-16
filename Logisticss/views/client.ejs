@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Client</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.1/socket.io.js"></script>
+</head>
+<body>
+
+    <h1>Socket.IO Client</h1>
+
+    <script>
+        // Connect to the server
+        const socket = io();
+
+        // Event handler for when the client receives a message from the server
+        socket.on('message', (data) => {
+            console.log('Message from server:', data);
+        });
+
+        // Example: Sending a message to the server
+        socket.emit('message', 'Hello from the client!');
+    </script>
+
+</body>
+</html>

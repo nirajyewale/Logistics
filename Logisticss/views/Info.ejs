@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Logistics</title>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCCAGPNVBLaEZQPnrUDHwhDnFvdPIxCqKs&loading=async"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCCAGPNVBLaEZQPnrUDHwhDnFvdPIxCqKs&libraries=places"></script>
+
+</head>
+<link rel="stylesheet" href="css/Info.css">
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />    
+<body>
+
+    <nav>
+        <ul>
+            <a href="#" class="brands" id="menus" onclick="openNav()"><span
+                    class="material-symbols-outlined">menu</span></a>
+                    <a href="#" id="hola" onclick="goToHomepage()"><li class="brand"><img
+                        src="https://i.pinimg.com/originals/db/f5/db/dbf5db560877b9a9144e9806337447be.jpg"
+                        alt="LogisticsPro" width=10> LogisticsPro</li></a>
+            <li class="brand1"><a href="#" onclick="goToHomepage()">Home</a></li>
+            <li class="brand1"><a href="#" onclick="goToAboutpage()">About</a></li>
+            
+            <li class="brand1">
+                <div class="dropdown">
+                <a href="#" class="services">Services</a>
+                <a href="#" class="drop">
+                    <span class="material-symbols-outlined answers">arrow_drop_down</span>
+                </a>
+                <div class="dropdown-content">
+                    <a href="#" class="dropdown-content1" onclick="goToLoginpage()"><p>Book</p></a>
+                </div>
+            </div>
+            </li>
+                     
+            <li class="brand1"><a href="#" id="spaces" onclick="goToContactpage()">Contact Us</a></li>
+            <div class="book"><a href="#" class="Booked" onclick="goToLoginpage()">Customer Login</a></div>
+        </ul>
+    </nav>
+    <div id="mySidenav" class="sidenav">
+        <ul>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <li><a href="#" onclick="goToHomepage()"><span class="material-symbols-outlined">home</span>Home</a></li>
+            <li><a href="#" onclick="goToLoginpage()"><span class="material-symbols-outlined">login</span>Customer Login</a></li>
+            <li><a href="#" onclick="goToLoginpage()"><span class="material-symbols-outlined">directions_car</span>Book</a></li>
+            <li><a href="#" onclick="goToDriverLoginpage()"><span class="material-symbols-outlined">id_card</span> Driver Login</a>
+            <li><a href="#" onclick="goToAboutpage()"><span class="material-symbols-outlined">info</span> About Us</a></li>
+            <li><a href="#" onclick="goToContactpage()"><span class="material-symbols-outlined">contact_support</span> Contact Us</a></li>
+        </ul>
+    </div>
+    <div class="contents">
+        <div class="importance">
+        <h1>Company Overview</h1></div>
+        <div class="content c1">
+    <p><b>LogisticsPro</b> was founded in 2020 with a clear mission: to transform the landscape of ground transportation logistics by providing reliable and efficient solutions for businesses. Our vision is to become the top choice for companies worldwide by delivering exceptional convenience, safety, and cost-effectiveness in every delivery. What sets Logistics apart is our unwavering dedication to innovation, customer satisfaction, and sustainability.</p></div>
+        <div class="content c2">
+    <h1>History</h1>
+        <p><b>LogisticsPro's</b>History The story of Logistics began with a drive to address the challenges faced by businesses in managing efficient ground truck transportation. Our founders envisioned a platform that would bridge the gap between logistics companies and customers, ensuring timely and reliable freight movement. Despite early setbacks, Logistics pushed forward, guided by a strong vision. Since our inception, Logistics has reached major milestones, evolving into a leading provider of ground transportation logistics. We have consistently demonstrated how technology can transform logistics and optimize operations, benefiting thousands of businesses.</p></div>
+        <div class="content c3">
+    <h1>Services Offered</h1>
+            <h2>LogisticsPro is your comprehensive solution for ground transportation needs. Our diverse range of services includes:</h2>
+    <ul>
+        <li><h2>Freight Trucking:</h2><p>Manage large cargo shipments across regions with our efficient freight trucking services.</p></li>
+        <li><h2>Last-Mile Delivery: </h2><p>Ensure timely and reliable last-mile deliveries to your customers’ doorsteps.</p></li>
+        <li><h2>Interstate Transport: </h2><p>For long-distance shipments, our interstate trucking service guarantees seamless transport across state lines.</p></li>
+        <li><h2>Express Delivery: </h2><p>Need fast service? Our express delivery option ensures your urgent shipments are prioritized.</p></li>
+    </ul>
+    <p>At LogisticsPro, we are committed to more than just transportation. Our platform offers additional features that streamline business operations.</p></div>
+    <div class="content c4">
+    <h1>Technology</h1>
+    <p>Logistics leverages state-of-the-art technology to ensure seamless operations. Our platform, available on both mobile and web, provides real-time tracking, advanced route optimization, and secure payment options, making the transportation process smoother for both businesses and drivers. We continuously invest in cutting-edge solutions to improve operational efficiency and safety.</p></div>
+    <div class="content c5">
+    <h1>Safety Measures</h1>
+    <p>Safety is a cornerstone of LogisticsPro. We implement stringent safety protocols, including thorough driver vetting, regular vehicle inspections, and real-time ride monitoring. Our safety features ensure peace of mind for businesses entrusting us with their cargo.</p></div>
+    <div class="content c6">
+    <h1>Community Impact</h1>
+    <p>At Logistics, we believe in making a positive impact. We participate in environmental sustainability initiatives, focusing on reducing our carbon footprint through optimized routing and fuel-efficient practices. Additionally, we contribute to community welfare projects, actively supporting the areas where we operate.</p></div>
+    <div class="content c7">
+    <h1>Team</h1>
+    <p>Our success is powered by a team of dedicated professionals in logistics, technology, and customer service. Their expertise and commitment to excellence ensure that every shipment is handled with the utmost care and precision.</p></div>
+    <div class="content c8">
+    <h1>Future Plans</h1>
+    <p> Looking ahead, Logistics is focused on expanding its service offerings and continually improving the customer experience. Stay tuned for exciting developments as we work to further enhance ground logistics through technology and innovation.</p></div>
+    <script src="/js/script.js"></script>
+    <footer>
+        <p>&copy; 2024 LogisticsPro. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
